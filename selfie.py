@@ -1,5 +1,6 @@
 import json
 from colorama import Fore, Style, init
+from typing import Any
 
 '''json module info:
         dump = write to a file
@@ -68,8 +69,8 @@ class Selfie:
         self.__logs.append(log)
 
     @property
-    def curState(self) -> dict: #return python dict of current state (not including hidden/private variables)
-        params: dict = {
+    def curState(self) -> dict[str, Any]: #return python dict of current state (not including hidden/private variables)
+        params: dict[str, Any] = {
             k:v
             for k, v in vars(self).items()
             if not k.startswith('_')
@@ -85,8 +86,8 @@ class Selfie:
         return self.__logs.copy() #returns a copy to prevent edits from outside the class
 
     def update(self, state: str = '{}', index: noneInt = None) -> None:
-        current: dict = self.curState
-        new: dict #prevents redefining of types
+        current: dict[str, Any] = self.curState
+        new: dict[str, Any] #prevents redefining of types
 
         if index is not None: #checks where to get new parameters from
             try:
@@ -130,7 +131,7 @@ class Selfie:
         else:
             self.log(f'Warning: Selfie object state not saved - matches previous state: {selfie}', color='YELLOW')
 
-    def package(self, output_file) -> None: #write history to file
+    def package(self, output_file: str) -> None: #write history to file
         with open(output_file, 'w') as file:
             try:
                 json.dump(self.__history, file, indent=4)
